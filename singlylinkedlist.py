@@ -148,7 +148,50 @@ def kth_last2helper(node, k):
   if index == k:
       print(f"found: {node.data}")
   return index
-            
+
+"""
+2.3 Delete Middle Node
+"""
+def del_middle_node(node):
+    """
+    Copy the data of the next node into this node and delete the next node.
+    """
+    if node == None or node.next == None:
+        return
+
+    node.data = node.next.data
+    node.next = node.next.next
+
+"""
+2.4 Partition
+"""
+        
+"""
+2.5 Sum Lists
+"""
+
+def sum_lists(x, y):
+    return SinglyLinkedList(sum_lists_helper(x.head, y.head, 0))
+
+def sum_lists_helper(x, y, carry):
+
+    if x == None or y == None:
+        return None
+    sum = x.data + y.data + carry
+
+    if sum > 9:
+        sum -= 10
+        carry = 1
+    else:
+        carry = 0
+
+    result = Node(sum)
+
+    result.next = sum_lists_helper(x.next, y.next, carry)
+    return result
+
+
+
 class TestLinkedList:
     def __init__(self):
         self.l = SinglyLinkedList(head=Node(1))
@@ -181,14 +224,38 @@ if __name__ == "__main__":
     lst.append(Node(2))
     lst.append(Node(4))
     lst.append(Node(4))
+    lst.append(Node(9))
+    lst.append(Node(2))
     print(lst)
     nodups = remove_dups1(lst)
     print(nodups)
     kth = kth_last(lst,2)
     print(kth)
     kth = kth_last2(lst,2)
-    print(kth)
 
+
+    lst = SinglyLinkedList(head=Node(1))
+    lst.append(Node(2))
+    lst.append(Node(3))
+    lst.append(Node(1))
+    lst.append(Node(2))
+    lst.append(Node(4))
+    lst.append(Node(4))
+    lst.append(Node(9))
+    lst.append(Node(2))
+    node = lst.get(3)
+    print(f"Node to be deleted: {node}")
+    del_middle_node(node)
+    print(lst)
+
+    a = SinglyLinkedList(head=Node(1))
+    a.append(Node(1))
+    a.append(Node(1))
+    b = SinglyLinkedList(head=Node(1))
+    b.append(Node(9))
+    b.append(Node(1))
+    b.append(Node(2))
+    print(sum_lists(a, b))
 
     
 

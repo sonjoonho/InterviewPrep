@@ -128,14 +128,77 @@ def triple_step_better(n):
         c = d
 
     return a + b + c
+
+"""
+8.4 Power set
+"""
+def power_set(l):
+    # The power set of the empty set is the set containign the empty set
+    if l == []:
+        return [[]]
+    # The power set of any other set is the power set of the set containing
+    # some element, and all without
+    e = [l[0]]
+    rest = power_set(l[1:])
+    return rest + [e + y for y in rest]
+
+#broken
+def power_set2(l):
+    # Count up to 2^len(l) in binary, masking as we go
+    ps = []
+    bitmask = [0] * 2**len(l)
+    for k in range(2**len(l)):
+        for i, c in enumerate(str(bin(k))[2:]):
+            bitmask[i] = int(c)
+        print(bitmask)
+        ps.append([x for x, k in zip(l, bitmask) if k == 1])
+    return ps
+
+"""
+8.7 Permuations with Dups
+"""
+
+"""
+takes a string
+return an array of strings
+"""
+def perms(s):
+    permutations = []
+
+    if s == "":
+        permutations.append("")
+        return permutations
+
+    x = s[0]
+    xs = s[1:]
+    words = perms(xs)
+    for word in words:
+        for i in range(len(word)+1):
+            s = word[:i] + x + word[i:]
+            print(s)
+            permutations.append(s)
+    return permutations
+
+def perms2(s):
+    if s == "":
+        return [""]
+
+    permutations = []
     
+    for i in range(len(s)):
+        p = perms(s[:i] + s[i+1:])
+        for word in p:
+            permutations.append(s[i] + word)
+    return permutations
+
 
 
 if __name__ == "__main__":
     # print(memoised_fib(5))
     # print(iterative_fib(5))
     # print(better_fib(5))
-    print(triple_step(5))
-    print(triple_step_memo(5))
-    print(triple_step_iterative(5))
-    print(triple_step_better(5))
+    # print(triple_step(5))
+    # print(triple_step_memo(5))
+    # print(triple_step_iterative(5))
+    # print(triple_step_better(5))
+    print(perms2("abc"))

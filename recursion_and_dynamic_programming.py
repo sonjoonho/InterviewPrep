@@ -191,7 +191,47 @@ def perms2(s):
             permutations.append(s[i] + word)
     return permutations
 
+"""
+Robot in a Grid
+"""
+def get_path(maze):
+    if maze is None:
+        print("Maze is empty")
+        return None
 
+    path = []
+    find_path(maze, (len(maze)-1, len(maze[0])-1), path)
+    return path
+
+def path(maze, point, path):
+    r = point[0]
+    c = point[1]
+
+    if r < 0 or c < 0 or not maze[r][c]:
+        return False
+
+    if path(maze, (r-1, c), path) or path(maze, (r, c-1), path):
+        path.append((r, c))
+        return True
+    return False
+
+def count_paths(maze, r, c, count):
+    if maze[r][c] == None:
+        return 0
+    if r == len(maze) and c == len(maze[0]):
+        return 1
+    
+    return count_paths(maze, r+1, c) + count_paths(maze, r, c) 
+
+def count_paths_mem(maze, r, c, paths):
+    if maze[r][c] == None:
+        return 0
+    if r == len(maze) and c == len(maze[0]):
+        return 1
+    
+    paths[r][c] = count_paths_mem(maze, r+1, c, paths) + count_paths_mem(maze, r, c+1, paths)
+    return paths[r][c]
+    
 
 if __name__ == "__main__":
     # print(memoised_fib(5))
@@ -201,4 +241,4 @@ if __name__ == "__main__":
     # print(triple_step_memo(5))
     # print(triple_step_iterative(5))
     # print(triple_step_better(5))
-    print(perms2("abc"))
+    # print(perms2("abc"))

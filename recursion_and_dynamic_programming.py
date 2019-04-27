@@ -1,3 +1,4 @@
+from typing import List
 """General Notes
 
 Bottom up:
@@ -191,6 +192,7 @@ def perms2(s):
             permutations.append(s[i] + word)
     return permutations
 
+<<<<<<< HEAD
 """
 Robot in a Grid
 """
@@ -231,14 +233,156 @@ def count_paths_mem(maze, r, c, paths):
     
     paths[r][c] = count_paths_mem(maze, r+1, c, paths) + count_paths_mem(maze, r, c+1, paths)
     return paths[r][c]
+=======
+def is_subset_sum_rec(numbers, m):
+    if m == 0:
+        return True
+    if m < 0:
+        return False
+    if len(numbers) == 0:
+        return False
+    return is_subset_sum_rec(numbers[1  :], m) or is_subset_sum_rec(numbers[  1:], m-numbers[0])
+
+def is_subset_sum_dp(numbers, m):
+    n = len(numbers)
+    dp = [[False for i in range(m+1)] for i in range(n+1)]
     
+    for i in range(n+1):
+        for j in range(m+1):
+            if j == 0:
+                dp[i][j] = True
+            elif i == 0:
+                dp[i][j] = False
+            elif j < numbers[i-1]:
+                dp[i][j] = dp[i-1][j]
+            else:
+                dp[i][j] = dp[i-1][j] or dp[i-1][j-numbers[i-1]]
+
+
+    return dp[n][m]
+
+def longest_snake(grid: List[List[int]]) -> int:
+    m = len(grid)
+    n = len(grid[0])
+    T = [[0 for i in range(n)] for j in range(m)]
+
+    for i in range(m-1, -1, -1):
+        for j in range(n-1, -1, -1):
+            if i == m-1 and j == n-1:
+                T[m-1][n-1] = grid[m-1][n-1]
+            elif i == m-1:
+                T[i][j] = grid[i][j] + T[i][j+1]
+            elif j == n-1:
+                T[i][j] = grid[i][j] + T[i+1][j]
+            else:
+                T[i][j] = grid[i][j] + max(T[i+1][j], T[i][j+1])
+    
+    return max(map(max, T))
+
+def cutting_a_rod(rods) -> int:
+    rods[0] = 0
+
+    # Let T[i] be the maximum value obtained from a rod of length i.
+    T = [0 for i in range(len(rods)+1)]
+    T[0] = 0 
+
+    # Either T[i] = max(rods[i], T[i-1] + rods[1], T[i-2] + rods[2]...)
+    for i in range(1, len(T)):
+        T[i] = max([rods[j] + T[i-j] for j in range(i)])
+
+    return T[-1]
+
+def knapsack_problem(values, weights, W):
+    assert(len(values) == len(weights))
+    # For each item, either it is included in the maximum subset or it is not.
+    # Therefore, there are two cases:
+    # 1. Maximum value obtained by n-1 items and W weight (excl. n).
+    # 2. Value of nth item + maximum value obtained by n-1 items and W minus 
+    #    the weight of the nth item (incl. n).
+    
+    # D[i][j] = max value using i items in volume j.
+    D = [[0 for i in range(W+1)] for j in range(len(values)+1)]
+
+    for i in range(len(values)+1):
+        for j in range(W+1):
+            if i == 0 or j == 0:
+                D[i][j] = 0
+            elif weights[i-1] > j:
+                D[i][j] = D[i-1][j]
+            else:
+                D[i][j] = max(D[i-1][j], values[i-1] + D[i-1][j - weights[i-1]])
+
+    return D[len(values)][W]
+
+def longest_common_subsequence(A, B):
+    m = len(A)
+    n = len(B)
+
+    D = [[0 for i in range(n+1)] for j in range(m+1)]
+
+    # 0: UP
+    # 1: LEFT
+    # 2: UP-LEFT
+
+    for i in range(m+1):
+        for j in range(n+1):
+            if i == 0 or j == 0:
+                D[i][j] = 0
+            elif A[i-1] == B[j-1]:
+                D[i][j] = D[i-1][j-1] + 1
+            elif D[i-1][j] >= D[i][j-1]:
+                D[i][j] = D[i-1][j]
+            else:
+                D[i][j] = D[i][j-1]
+
+    index = D[m][n]
+    i = m 
+    j = n 
+    while i > 0 and j > 0: 
+  
+        # If current character in X[] and Y are same, then 
+        # current character is part of LCS 
+        if A[i-1] == B[j-1]: 
+            print(A[i-1], end='')
+            i-=1
+            j-=1
+            index-=1
+  
+        # If not same, then find the larger of two and 
+        # go in the direction of larger value 
+        elif D[i-1][j] > D[i][j-1]: 
+            i-=1
+        else: 
+            j-=1
+  
+    return D[m][n]
 
 if __name__ == "__main__":
-    # print(memoised_fib(5))
-    # print(iterative_fib(5))
-    # print(better_fib(5))
-    # print(triple_step(5))
-    # print(triple_step_memo(5))
+    A = "ABCDGH"
+    B = "AEDFHR"
+    # A = "AGGTAB"
+    # B = "GXTXAYB"
+    print(longest_common_subsequence(A, B))
+    # values = [60, 100, 120]
+    # weights = [10, 20 , 30]
+    # W = 50
+    # print(knapsack_problem(values, weights, W))
+    # rods = {1: 1, 2: 5, 3: 8, 4: 9, 5: 10, 6: 17, 7: 17, 8: 20}
+    # rods2 = {1: 3, 2: 5, 3: 8, 4: 9, 5: 10, 6: 17, 7: 17, 8: 20}
+    # print(cutting_a_rod(rods2))
+    # A = [[9, 6, 5, 2],
+    #      [8, 7, 6, 5],
+    #      [7, 3, 1, 6],
+    #      [1, 1, 1, 7]]
+    # print(longest_snake(A))
+    # print(is_subset_sum_dp([1, 2, 3], 5))
+    # print(is_subset_sum_dp([1, 2, 3], 6))
+    # print(is_subset_sum_dp([1, 2, 3], 7))
+    # print(is_subset_sum_dp([1, 2, 3], 9))
+    # print(ised_fib(5))
+    # print(ative_fib(5))
+    # print(er_fib(5))
+    # print(le_step(5))
+    # print(iple_step_memo(5))
     # print(triple_step_iterative(5))
     # print(triple_step_better(5))
-    # print(perms2("abc"))

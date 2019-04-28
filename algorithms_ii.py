@@ -12,6 +12,37 @@ DYNAMIC PROGRAMMING
 """
 
 """
+Quicksort
+"""
+def super_speedy_sort(arr, p, r):
+    # p is the beginning of the array, r is the end
+    if p < r:
+        q = partition(arr, p, r)
+        # At this point, arr has been partitioned around the pivot
+        super_speedy_sort(arr, p, q-1)
+        super_speedy_sort(arr, q+1, r)
+
+def partition(arr, p, r):
+    # Select arr[r] as the pivot element
+    x = arr[r]
+    i = p - 1
+
+    # Region p to i is the region less than the pivot
+    # Region i to j is the regin greater than the pivot
+    
+    for j in range(p, r):
+        if arr[j] <= x:
+            i = i+1
+            swap(arr, i, j)
+    swap(arr, i+1, r)
+
+def swap(arr, i, j):
+    temp = arr[i]
+    arr[i] = arr[j]
+    arr[j] = temp
+
+
+"""
 Maximum Subarray Sum
 """
 def max_subarray_dp(arr):

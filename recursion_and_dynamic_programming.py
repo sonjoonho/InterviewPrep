@@ -192,7 +192,6 @@ def perms2(s):
             permutations.append(s[i] + word)
     return permutations
 
-<<<<<<< HEAD
 """
 Robot in a Grid
 """
@@ -233,7 +232,7 @@ def count_paths_mem(maze, r, c, paths):
     
     paths[r][c] = count_paths_mem(maze, r+1, c, paths) + count_paths_mem(maze, r, c+1, paths)
     return paths[r][c]
-=======
+
 def is_subset_sum_rec(numbers, m):
     if m == 0:
         return True
@@ -292,7 +291,7 @@ def cutting_a_rod(rods) -> int:
 
     return T[-1]
 
-def knapsack_problem(values, weights, W):
+def zero_one_knapsack_problem(values, weights, W):
     assert(len(values) == len(weights))
     # For each item, either it is included in the maximum subset or it is not.
     # Therefore, there are two cases:
@@ -357,16 +356,48 @@ def longest_common_subsequence(A, B):
   
     return D[m][n]
 
+def fractional_knapsack_problem(values: List[int], weights: List[int], W: int) -> int:
+    # Take a greedy approach.
+    value_per_weight = [v / w for (v, w) in zip(values, weights)][::-1]
+    values = [v for _, v in sorted(zip(value_per_weight, values), key = lambda pair: pair[0])]
+    weights = [w for _, w in sorted(zip(value_per_weight, weights), key = lambda pair: pair[0])]
+
+    remaining_weight = W
+    max_val = 0
+    i = 0
+    while remaining_weight >= 0 and i < len(value_per_weight):
+        # Determine how much we should take.
+        t = min(1, remaining_weight / weights[i]) 
+
+        max_val += t * values[i]
+        remaining_weight -= t * weights[i]
+
+        i += 1
+
+    return max_val
+
+
+class TestDynamicProgramming:
+    def test_01_knapsack(self):
+        values = [60, 100, 120]
+        weights = [10, 20, 30]
+        W = 50
+        assert zero_one_knapsack_problem(values, weights, W) == 220
+
+    def test_fractional_knapsack_problem(self):
+        values = [60, 100, 120]
+        weights = [10, 20, 30]
+        W = 50
+        assert fractional_knapsack_problem(values, weights, W) == 240
+
+
+
 if __name__ == "__main__":
     A = "ABCDGH"
     B = "AEDFHR"
     # A = "AGGTAB"
     # B = "GXTXAYB"
     print(longest_common_subsequence(A, B))
-    # values = [60, 100, 120]
-    # weights = [10, 20 , 30]
-    # W = 50
-    # print(knapsack_problem(values, weights, W))
     # rods = {1: 1, 2: 5, 3: 8, 4: 9, 5: 10, 6: 17, 7: 17, 8: 20}
     # rods2 = {1: 3, 2: 5, 3: 8, 4: 9, 5: 10, 6: 17, 7: 17, 8: 20}
     # print(cutting_a_rod(rods2))

@@ -193,16 +193,16 @@ def sum_lists_helper(x, y, carry):
 
 
 class TestLinkedList:
-    def __init__(self):
-        self.l = SinglyLinkedList(head=Node(1))
-
     def test_append(self):
-        self.l.append(Node(3))
-        self.l.append(Node(19))
-        assert self._l.size == 3
+        l = SinglyLinkedList(head=Node(1))
+
+        l.append(Node(3))
+        l.append(Node(19))
+        assert l.size == 3
 
     def test_get(self):
-        assert self.l.get(2) == 19
+        l = SinglyLinkedList(head=Node(1))
+        assert l.get(2) == 19
 
 if __name__ == "__main__":
     lst = SinglyLinkedList(head=Node(11))

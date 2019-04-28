@@ -109,10 +109,38 @@ def print_lcs(D, A, B):
             j-=1
 
 """
+Longest Common Subsequence of three strings
+
+Simple extension of LCS.
+"""
+
+def longest_common_subsequence_of_three_strings(A, B, C):
+    a = len(A)
+    b = len(B)
+    c = len(C)
+
+    D = [[[0 for k in range(c+1)] for j in range(b+1)] for i in range(a+1)]
+
+    for i in range(a+1):
+        for j in range(b+1):
+            for k in range(c+1):
+                if i == 0 or j == 0 or j == 0:
+                    D[i][j][k] = 0
+                elif A[i-1] == B[j-1] == C[k-1]:
+                    D[i][j][k] = D[i-1][j-1][k-1] + 1
+                else:
+                    D[i][j][k] = max(D[i-1][j][k],
+                                     D[i][j-1][k],
+                                     D[i][j][k-1])
+
+    return D[a][b][c] 
+
+
+"""
 Longest snake
 
 Longest path in a grid (similar to max_apples which 
-appeard in a past paper.
+appeared in a past paper.
 """
 def longest_snake(grid: List[List[int]]) -> int:
     m = len(grid)
@@ -322,6 +350,20 @@ class TestAlgorithmsII:
         A = "AGGTAB"
         B = "GXTXAYB"
         assert longest_common_subsequence(A, B) == 4
+
+    def test_longest_common_subsequence_of_three_strings_1(self):
+        A = "geeks"
+        B = "geeksfor"
+        C = "geeksforgeeks"
+        # bless geeks for geeks
+        assert longest_common_subsequence_of_three_strings(A, B, C)
+
+    def test_longest_common_subsequence_of_three_strings_1(self):
+        A = "abcd1e2"
+        B = "bc12ea"
+        C = "bd1ea"
+        # bless geeks for geeks
+        assert longest_common_subsequence_of_three_strings(A, B, C)
     
     def test_is_subset_sum_1(self):
         assert is_subset_sum_dp([1, 2, 3], 5) == True

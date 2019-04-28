@@ -12,6 +12,24 @@ DYNAMIC PROGRAMMING
 """
 
 """
+Maximum Subarray Sum
+"""
+def max_subarray_dp(arr):
+    max_so_far = -1000
+    max_ending_here = 0
+
+    for i in range(len(arr)):
+        max_ending_here += arr[i]
+
+        if max_so_far < max_ending_here:
+            max_so_far = max_ending_here
+
+        if max_ending_here < 0:
+            max_ending_here = 0
+
+    return max_so_far
+
+"""
 Rod cutting
 """
 def cutting_a_rod(rods: List[int]) -> int:
@@ -332,6 +350,53 @@ def closest_number(arr: List[int], n: int) -> int:
 def get_closest(a, b, n):
     return a if abs(n - a) < abs(n-b) else b
 
+"""
+DIVIDE AND CONQUER
+"""
+
+"""
+Maximum Sum Subarray
+
+1. Divide the array into two halves
+2. Return max of
+    a. Maximum subarray of left half
+    b. Maximum subarray of right half
+    c. Maximum subarray of mid
+"""
+def max_subarray_dc(arr, low, high):
+
+    # Base case
+    if (low == high):
+        return arr[low]
+
+    mid = (low + high) // 2
+
+    # Max of three cases
+    return max(max_subarray_dc(arr, low, mid),
+               max_subarray_dc(arr, mid+1 ,high),
+               max_crossing_sum(arr, low, mid, high))
+
+def max_crossing_sum(arr, low, mid, high):
+    total = 0
+    left_total = -10000
+
+    for i in range(mid, low-1, -1):
+        total += arr[i]
+
+        if total > left_total:
+            left_total = total
+
+    total = 0
+    right_total = -10000
+
+    for i in range(mid+1, high+1):
+        total += arr[i]
+
+        if total > right_total:
+            right_total = total
+
+    return left_total + right_total
+
 
 class TestAlgorithmsII:
     def test_rod_cutting_1(self):
@@ -377,7 +442,6 @@ class TestAlgorithmsII:
         s = "CHARACTER"
         assert longest_common_palindromic_subsequence(s)
         
-    
     def test_is_subset_sum_1(self):
         assert is_subset_sum_dp([1, 2, 3], 5) == True
 
@@ -403,4 +467,13 @@ class TestAlgorithmsII:
     def test_closest_number_2(self):
         arr = [2, 5, 6, 7, 8, 8, 9]
         assert closest_number(arr, 4) == 5
+
+    def test_maximum_subarray_dc(self):
+        arr = [-2, -5, 6, -2, -3, 1, 5, -6]
+        assert max_subarray_dc(arr, 0, len(arr)-1) == 7
+
+    def test_maximum_subarray_dp(self):
+        arr = [-2, -5, 6, -2, -3, 1, 5, -6]
+        assert max_subarray_dp(arr) == 7
+
 

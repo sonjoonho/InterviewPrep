@@ -139,6 +139,10 @@ def longest_common_subsequence_of_three_strings(A, B, C):
 
     return D[a][b][c] 
 
+def longest_common_palindromic_subsequence(s):
+    s_r = s[::-1]
+
+    return longest_common_subsequence(s, s_r)
 
 """
 Longest snake
@@ -368,6 +372,11 @@ class TestAlgorithmsII:
         C = "bd1ea"
         # bless geeks for geeks
         assert longest_common_subsequence_of_three_strings(A, B, C)
+
+    def test_longest_palindromic_subsequence(self):
+        s = "CHARACTER"
+        assert longest_common_palindromic_subsequence(s)
+        
     
     def test_is_subset_sum_1(self):
         assert is_subset_sum_dp([1, 2, 3], 5) == True

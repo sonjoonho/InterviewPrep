@@ -1,13 +1,14 @@
 import pytest
 from typing import List
+from queue import Queue
 
 """
-Contains Python implementations of all algorithms encountered in the 2nd year
+Contains Python implementations of most algorithms encountered in the 2nd year
 Algorithms II course at Imperial College London.
 """
 
 """
-Dynamic Programming.
+DYNAMIC PROGRAMMING
 """
 
 """
@@ -200,6 +201,102 @@ def fractional_knapsack_problem(values: List[int], weights: List[int], W: int) -
 
     return max_val
 
+"""
+GRAPH ALGORTIHMS
+"""
+
+"""
+Notes on graph represenations
+You can have an adjacency list or an adjacency matrix
+Adjacency lists are generally better because you can easily iterate through all the neighours
+With adjacency matrices, you need to iterate through all the nodes to find a node's neighbours
+"""
+
+class Graph:
+    def __init__(self, nodes=[]):
+        self.nodes = nodes
+
+class GraphNode:
+    def __init__(self, value, adjacent=[], visited=False):
+        self.value = value
+        self.adjacent = adjancent
+        self.visited = visited
+
+"""
+Depth First Search
+
+Recursive implementation is generally easiest, but can be implemented
+iteratively using a stack.
+"""
+def recursive_dfs(root):
+    if root is None:
+        return
+    print(root.value)
+    root.visited = True
+
+    for n in root.adjacent:
+        if not n.visited:
+            recursive_dfs(n)
+
+"""
+Breadth First Search
+
+Uses a queue.
+"""
+def iterative_bfs(root):
+    queue = Queue()
+    root.visited = True
+
+    while not queue.empty():
+        r = queue.get()
+        r.visited = True
+        print(r.value)
+        for n in r.adjacent:
+            if not n.visited:
+                queue.put(n)
+
+#def bellman_ford():
+
+"""
+Get Closest Number
+
+Uses binary search for O(n log n) runtime.
+"""
+def closest_number(arr: List[int], n: int) -> int:
+
+    low = 0
+    high = len(arr)
+
+    if n <= arr[0]:
+        return arr[0]
+    elif n >= arr[-1]:
+        return arr[-1]
+
+    while low < high:
+        mid = (low + high) // 2
+        
+        if arr[mid] == n:
+            return n
+
+        elif n < arr[mid]:
+            # Search left
+
+            if mid > 0 and n > arr[mid-1]:
+                return get_closest(arr[mid-1], arr[mid], n)
+
+            high = mid
+        else:
+            if mid < n-1 and n < arr[mid+1]:
+                return get_closest(arr[mid+1], arr[mid], n)
+            low = mid+1
+
+
+    return arr[mid]
+
+def get_closest(a, b, n):
+    return a if abs(n - a) < abs(n-b) else b
+
+
 class TestAlgorithmsII:
     def test_rod_cutting_1(self):
 
@@ -243,4 +340,12 @@ class TestAlgorithmsII:
         weights = [10, 20, 30]
         W = 50
         assert fractional_knapsack_problem(values, weights, W) == 240
+
+    def test_closest_number_1(self):
+        arr = [1, 2, 4, 5, 6, 6, 8, 9]
+        assert closest_number(arr, 11) == 9
+
+    def test_closest_number_2(self):
+        arr = [2, 5, 6, 7, 8, 8, 9]
+        assert closest_number(arr, 4) == 5
 

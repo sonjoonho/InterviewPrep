@@ -74,7 +74,7 @@ def longest_common_subsequence(A, B):
             else:
                 D[i][j] = D[i][j-1]
 
-    print_lcs(D, A, B)
+    print(print_lcs(D, A, B))
   
     return D[m][n]
 
@@ -89,14 +89,16 @@ def print_lcs(D, A, B):
 
     index = D[m][n]
 
+    result = [' ' for i in range(index)]
+
     i = m 
     j = n 
     while i > 0 and j > 0: 
   
-        # If current character in X[] and Y are same, then 
+        # If current character in X and Y are same, then 
         # current character is part of LCS 
         if A[i-1] == B[j-1]: 
-            print(A[i-1], end='')
+            result[index-1] = A[i-1]
             i-=1
             j-=1
             index-=1
@@ -107,6 +109,8 @@ def print_lcs(D, A, B):
             i-=1
         else: 
             j-=1
+
+    return "".join(result)
 
 """
 Longest Common Subsequence of three strings

@@ -1,6 +1,0 @@
-{
-  "arrays_and_strings.py::TestArraysAndStrings::()::test_palindromePermutation": true,
-  "arrays_and_strings.py::TestArraysAndStrings::()::test_rotateMatrix": true,
-  "arrays_and_strings.py::TestArraysAndStrings::()::test_zeroMatrix": true,
-  "binary_search.py::TestBinarySearch::()::test_closest_number_1": true
-}

@@ -1,8 +1,0 @@
-[
-  "arrays_and_strings.py::TestArraysAndStrings::()::test_isUnique",
-  "arrays_and_strings.py::TestArraysAndStrings::()::test_checkPermutation",
-  "arrays_and_strings.py::TestArraysAndStrings::()::test_URLify",
-  "arrays_and_strings.py::TestArraysAndStrings::()::test_oneAway",
-  "arrays_and_strings.py::TestArraysAndStrings::()::test_stringCompression",
-  "arrays_and_strings.py::TestArraysAndStrings::()::test_longest_palindromic_subsequence"
-]
